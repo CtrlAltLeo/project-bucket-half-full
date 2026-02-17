@@ -84,39 +84,40 @@ int main(){
 
     // Build Camera Matrixes
 
-    Eigen::Matrix<float, 3, 4> C1;
+    Eigen::Matrix<double, 3, 4> C1;
     C1 << 1, 0, 0, 0,
                 0, 1, 0, 0,
                 0, 0, 1, 0;
     
-    Eigen::Matrix3d rVals[4] = {R1, R1, R2, R2};
-    Eigen::Matrix3d tVals[4] = {t1, t2, t1, t2};
+    std::vector<Eigen::Matrix3d> rVals = {R1, R1, R2, R2};
+    std::vector<Eigen::Vector3d> tVals = {t1, t2, t1, t2};
 
-    Eigen::Matrix3d R, t;
+    Eigen::Matrix3d R;
+    Eigen::Vector3d t;
 
     int bestCount = -1;
 
     for (int i = 0; i < 4; i++){
         Eigen::Matrix3d R_test = rVals[i];
-        Eigen::Matrix3d t_test = tVals[i];
+        Eigen::Vector3d t_test = tVals[i];
 
         if (R_test.determinant() < 0){
             R_test = -R_test;
         }
 
-        Eigen::Matrix<float, 3, 4> C2_test;
-        C2_test.block<3,3>(0,0) = R;
-        C2_test.col(3) = t;
+        Eigen::Matrix<double, 3, 4> C2_test;
+        C2_test.block<3,3>(0,0) = R_test;
+        C2_test.col(3) = t_test;
 
         int positiveDepthCount = 0;
 
         for (int j = 0; j < 8; j++){
             Eigen::Matrix4d Atri;
 
-            Atri.row(0) = Camera[0][i][0] * C1.row(2) - C1.row(0);
-            Atri.row(1) = Camera[0][i][1] * C1.row(2) - C1.row(1);
-            Atri.row(2) = Camera[1][i][0] * C2_test.row(2) - C2_test.row(0);
-            Atri.row(3) = Camera[1][i][1] * C2_test.row(2) - C2_test.row(1);
+            Atri.row(0) = Camera[0][j][0] * C1.row(2) - C1.row(0);
+            Atri.row(1) = Camera[0][j][1] * C1.row(2) - C1.row(1);
+            Atri.row(2) = Camera[1][j][0] * C2_test.row(2) - C2_test.row(0);
+            Atri.row(3) = Camera[1][j][1] * C2_test.row(2) - C2_test.row(1);
 
             // Solve AX = 0
             Eigen::JacobiSVD<Eigen::Matrix4d> svdTri(Atri, Eigen::ComputeFullV);
@@ -126,18 +127,18 @@ int main(){
 
             double C1z = X(2);
 
-            Eigen::Vector3d X_cam2 = R * X.head<3>() + t;
+            Eigen::Vector3d X3 = X.head<3>();
+            Eigen::Vector3d X_cam2 = R_test * X3 + t_test;
             double C2_testz = X_cam2(2);
 
             if (C1z > 0 && C2_testz > 0){
                 positiveDepthCount++;
             }
-
-            if(positiveDepthCount > bestCount){
-                bestCount = positiveDepthCount;
-                R = R_test;
-                t = t_test;
-            }
+        }
+        if(positiveDepthCount > bestCount){
+            bestCount = positiveDepthCount;
+            R = R_test;
+            t = t_test;
         }
     }
 
@@ -163,7 +164,7 @@ int main(){
         X /= X(3);
 
         // Print Triangulated Points
-        std::cout << "Point" << i << ": " << X(0) << ", " << X(1) << ", " << X(2); << std::endl;
+        std::cout << "Point " << i << ": " << X(0) << ",\t" << X(1) << ",\t" << X(2) << std::endl;
 
     }
     
