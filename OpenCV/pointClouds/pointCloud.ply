@@ -1,14 +1,14 @@
 ply
-		format ascii 1.0
-		element vertex 2736
-		property float x
-		property float y
-		property float z
-		property uchar red
-		property uchar green
-		property uchar blue
-		end_header
-		1622.813354 -1996.920044 3392.748047 167 162 154
+format ascii 1.0
+element vertex 2736
+property float x
+property float y
+property float z
+property uchar red
+property uchar green
+property uchar blue
+end_header
+1622.813354 -1996.920044 3392.748047 167 162 154
 1623.770020 -1989.058228 3379.390869 166 162 154
 1637.562744 -1996.920044 3392.748047 165 161 153
 1644.937378 -1996.920044 3392.748047 165 160 153
