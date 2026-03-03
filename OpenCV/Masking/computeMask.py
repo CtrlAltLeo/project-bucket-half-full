@@ -1,3 +1,5 @@
+## Failed POC to compute a 3D mask using feature points
+
 import cv2 as cv
 import numpy as np
 import os
@@ -49,7 +51,7 @@ cam2Pts = np.float64([keyPoints2[m.trainIdx].pt for m in matches])
 
 
 print(len(matches))
-# Calculate Essential MAtrix
+# Calculate Essential Matrix
 
 E, mask = cv.findEssentialMat(cam1Pts, cam2Pts, K, 
                               method=cv.RANSAC, prob=0.99, threshold=1.0)
