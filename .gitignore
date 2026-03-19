@@ -1,0 +1,2 @@
+# Don't save vim swap files
+*.swp
