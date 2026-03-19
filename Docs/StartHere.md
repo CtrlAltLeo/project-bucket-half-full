@@ -13,7 +13,7 @@ The vision team had two main ideas for solving the problem: Segmentation and Poi
 
 ## Segmentation
 
-Paul can add writeup here.
+Paul P can add writeup here.
 
 ## Point Clouds
 A Stereo Camera (used with OpenCV) can pull a Point Cloud from two stereo images. A Point Cloud is a collection of points in 3 space

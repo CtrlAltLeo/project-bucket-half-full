@@ -1,2 +1,3 @@
 # Don't save vim swap files
 *.swp
+*.md.swp
