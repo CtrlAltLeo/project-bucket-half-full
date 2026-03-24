@@ -58,6 +58,9 @@ This file is then uploaded into usdview and gives us access to observing our sph
 To begin working with and viewing USD files, usdview download and documentation can be found [here](https://docs.omniverse.nvidia.com/usd/latest/usdview/index.html). Walking through most of the usdview section is extremely helpful to the installation process and understanding the basics.
 
 ## Blender
+Now that we have worked with coding basic objects with USD fies and viewing them in usdview, it is time to move to a more robust application: *Blender*.
+
+
 
 ### Aside: STL -> USD using Blender
 To demonstrate some of the flexibility USD has to offer, we tested converting a STL (.stl) file to a USD (.usda) file and loading this into usdview. This can be done simply by:
