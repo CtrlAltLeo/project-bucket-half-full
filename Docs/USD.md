@@ -55,7 +55,7 @@ We can begin as simple as developing a basic object, such as a sphere or cube, m
     }
 This file is then uploaded into usdview and gives us access to observing our sphere in a 3D environment. We are able to easily move, zoom, and rotate our camera to see our objects from any angle.
 
-To begin working with and viewing USD files, usdview download and documentation can be found [here](https://docs.omniverse.nvidia.com/usd/latest/usdview/index.html).
+To begin working with and viewing USD files, usdview download and documentation can be found [here](https://docs.omniverse.nvidia.com/usd/latest/usdview/index.html). Walking through most of the usdview section is extremely helpful to the installation process and understanding the basics.
 
 ## Blender
 
