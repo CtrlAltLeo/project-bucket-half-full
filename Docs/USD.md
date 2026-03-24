@@ -1,4 +1,4 @@
-# Working with Universal Scene Description
+# Working with Universal Scene Description (USD)
 Since the foundation of this project relies on means of simulation, familiarity with construction 3-D objects is essential.
 
 Developing and combining the bucket asset with a material to fill it with is performed within Isaac Sim (Working with this reference application is gone into more detail in the [StartHere](Docs/StartHere.md) and [IsaacSim](Docs/IsaacSim.md) files. However, it was not ideal to jump straight into this process without understanding the basics of working with 3D objects. This includes the code to build objects, the environments such objects are subject to, and the different applications to manipulate the objects.
