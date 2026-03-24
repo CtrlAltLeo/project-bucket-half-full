@@ -61,10 +61,10 @@ To begin working with and viewing USD files, usdview download and documentation 
 
 ### Aside: STL -> USD using Blender
 To demonstrate some of the flexibility USD has to offer, we tested converting a STL (.stl) file to a USD (.usda) file and loading this into usdview. This can be done simply by:
-- Downloading any STL file of your choosing (or creating your own)
-- Opening the file in Blender
-- Exporting as a USD file
-- Uploading the exported file into usdview 
+1. Downloading any STL file of your choosing (or creating your own)
+2. Opening the file in Blender
+3. Exporting as a USD file
+4. Uploading the exported file into usdview 
 
 ## Versions & Tooling
 *Just in case...*
