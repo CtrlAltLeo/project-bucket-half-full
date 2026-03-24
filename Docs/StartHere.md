@@ -51,6 +51,7 @@ Here is a map of everthing we've included:
     - Segmentation.md
     - IsaacSim.md
     - Theory.md
+    - USD.md
     - ProjectReports/ (all of our quad charts, slides, final report pdf, etc)
 
 
