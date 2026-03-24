@@ -8,3 +8,5 @@ Our simulation workflow consisted of 3 main parts, gone into further detail belo
 2. Using Blender to simulate more detailed assets while developing objects with a GUI.
 3. Shifting work into Isaac Sim and implementing assets supplied by Bobcat.
 
+## usdview
+Using usdview is a solid way to get an "introduction" to working directly with the USD file format (.usd or .usda).
