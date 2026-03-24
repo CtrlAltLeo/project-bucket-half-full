@@ -15,7 +15,7 @@ The first two parts of the workflow are relatively acheivable using your persona
 ## usdview
 Using usdview is our first step to creating objects and getting an "introduction" to working directly with the USD file format (.usd or .usda).
 
-We can begin as simple as developing a basic object, such as a sphere or cube, move into adjusting their size and placement, and finally, adjust their material properties such as color and roughness. Below is an example of how we created a single red sphere.
+We can begin as simple as developing a basic object, such as a sphere or cube, move into adjusting their size and placement, and finally, adjust their material properties such as color and roughness. Below is an example of how we created a single red sphere. This can be done in any text editor, but we used Notepad++.
 
     #usda 1.0
     (
