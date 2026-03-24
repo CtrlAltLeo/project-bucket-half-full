@@ -8,7 +8,7 @@ Our simulation workflow consisted of 3 main parts, gone into further detail belo
 2. Using Blender to simulate more detailed assets while developing objects with a GUI.
 3. Shifting work into Isaac Sim and implementing assets supplied by Bobcat.
 
-The first two parts of the workflow are relatively acheivable using your personal PC. usdview is a very light application and, although Blender is a heavier application, can be adjusted to render more smoothly based on your hardware. We have been running these two applications on Windows PCs.  We recommend downloading these two applications. Isaac Sim can be setup with the help of the Bobcat team.
+The first two parts of the workflow are relatively acheivable using your personal PC. usdview is a very light application and, although Blender is a heavier application, can be adjusted to render more smoothly based on your hardware. We have been running these two applications on Windows PCs.  We recommend downloading these two applications (links to do so are presented in the following sections). Isaac Sim can be setup with the help of the Bobcat team.
 
 *One quirky issue we have run into: if you happen to be running an ARM architecture, you may come across some issues downloading and installing usdview. It is best to use a common x86 processor instead.*
 
@@ -61,7 +61,8 @@ To begin working with and viewing USD files, usdview download and documentation 
 
 ## Versions & Tooling
 *Just in case...*
+
 We used the following versions of the applications:
-- Blender: Version 5.0
-- USD: Version 25.08
-- Python: Version 3.12
+- Blender: Version **5.0**
+- USD: Version **25.08**
+- Python: Version **3.12**
