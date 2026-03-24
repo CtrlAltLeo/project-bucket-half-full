@@ -58,3 +58,10 @@ This file is then uploaded into usdview and gives us access to observing our sph
 To begin working with and viewing USD files, usdview download and documentation can be found [here](https://docs.omniverse.nvidia.com/usd/latest/usdview/index.html).
 
 ### Aside: STL -> USD using Blender
+
+## Versions & Tooling
+*Just in case...*
+We used the following versions of the applications:
+- Blender: Version 5.0
+- USD: Version 25.08
+- Python: Version 3.12
