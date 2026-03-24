@@ -8,6 +8,10 @@ Our simulation workflow consisted of 3 main parts, gone into further detail belo
 2. Using Blender to simulate more detailed assets while developing objects with a GUI.
 3. Shifting work into Isaac Sim and implementing assets supplied by Bobcat.
 
+The first two parts of the workflow are relatively acheivable using your personal PC. usdview is a very light application and, although Blender is a heavier application, can be adjusted to render more smoothly based on your hardware. We have been running these two applications on Windows PCs.  We recommend downloading these two applications. Isaac Sim can be setup with the help of the Bobcat team.
+
+*One quirky note: if you happen to be running an ARM architecture, you may run into some issues downloading and installing usdview. It is best to use a common x86 processor instead.*
+
 ## usdview
 Using usdview is our first step to creating objects and getting an "introduction" to working directly with the USD file format (.usd or .usda).
 
@@ -51,4 +55,6 @@ We can begin as simple as developing a basic object, such as a sphere or cube, m
     }
 This file is then uploaded into usdview and gives us access to observing our sphere in a 3D environment. We are able to easily move, zoom, and rotate our camera to see our objects from any angle.
 
-The usdview download and documentation can be found [here](https://docs.omniverse.nvidia.com/usd/latest/usdview/index.html).
+To begin working with and viewing USD files, usdview download and documentation can be found [here](https://docs.omniverse.nvidia.com/usd/latest/usdview/index.html).
+
+### Aside: STL -> USD using Blender
