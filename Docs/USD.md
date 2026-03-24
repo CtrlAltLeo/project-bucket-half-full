@@ -10,5 +10,6 @@ Our simulation workflow consisted of 3 main parts, gone into further detail belo
 
 ## usdview
 Using usdview is our first step to creating objects and getting an "introduction" to working directly with the USD file format (.usd or .usda).
+We can begin as simple as developing a basic object, such as a sphere or cube, move into adjusting their size and placement, and finally, adjust their material properties such as color and roughness.
 
 The usdview download and documentation can be found [here](https://docs.omniverse.nvidia.com/usd/latest/usdview/index.html).
