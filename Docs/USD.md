@@ -9,4 +9,6 @@ Our simulation workflow consisted of 3 main parts, gone into further detail belo
 3. Shifting work into Isaac Sim and implementing assets supplied by Bobcat.
 
 ## usdview
-Using usdview is a solid way to get an "introduction" to working directly with the USD file format (.usd or .usda).
+Using usdview is our first step to creating objects and getting an "introduction" to working directly with the USD file format (.usd or .usda).
+
+The usdview download and documentation can be found [here](https://docs.omniverse.nvidia.com/usd/latest/usdview/index.html).
