@@ -60,6 +60,8 @@ To begin working with and viewing USD files, usdview download and documentation 
 ## Blender
 Now that we have worked with coding basic objects with USD fies and viewing them in usdview, it is time to move to a more robust application: *Blender*.
 
+To begin working with Blender, the download and documentation can be found [here](https://www.blender.org/download/). At the time of composing this documentation, the next version of Blender, **5.1**, has been released.
+
 
 
 ### Aside: STL -> USD using Blender
