@@ -1,3 +1,9 @@
+#######################################################################################
+# essentials.py
+# This program showcases simple operatations that you can do with OpenCV.
+# You'll want to update the path `./boxCam1.png` to something that you have access to,
+# or another image in the OpenCV repo.
+#######################################################################################
 import cv2 as cv
 import os
 
@@ -17,7 +23,6 @@ blur = cv.GaussianBlur(img, (11,11), cv.BORDER_DEFAULT)
 cv.imshow("Blur", blur)
 
 
-
 # Edge Cascade
 canny = cv.Canny(img, 50, 70)
 cv.imshow("Edge Detectoin", canny)
@@ -25,6 +30,5 @@ cv.imshow("Edge Detectoin", canny)
 # Combining Edge with Blur to reduce noise
 canny1 = cv.Canny(blur, 50, 70)
 cv.imshow("Edge Cascade w/ Blur", canny1)
-
 
 cv.waitKey(0)
