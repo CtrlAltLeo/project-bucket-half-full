@@ -1,3 +1,7 @@
+
+# This was an attempt (with a integrated and external webcam "stereo setup") to live detect
+# edges. Engineering laptops were not powerful enough for this, but a gaming laptop ran it.
+
 import cv2 as cv
 
 capture = cv.VideoCapture(0)

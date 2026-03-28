@@ -1,3 +1,6 @@
+
+# This shows reading and rescaling images from the file system
+
 import cv2 as cv
 
 
