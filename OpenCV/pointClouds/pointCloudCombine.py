@@ -2,13 +2,7 @@ import numpy as np
 import trimesh
 import os
 
-# Bucket dimensions in meters
-BUCKET_LENGTH = 2.0  # Depth (Z direction)
-BUCKET_WIDTH = 5.0   # Width (X direction)
-BUCKET_HEIGHT = 3.0  # Height (Y direction)
-
 def load_and_clean_pc(file_path):
-    print(f"Loading {file_path}...")
     pc = trimesh.load(file_path)
     mask = np.isfinite(pc.vertices).all(axis=1)
     pc.vertices = pc.vertices[mask]
@@ -16,118 +10,96 @@ def load_and_clean_pc(file_path):
         pc.colors = pc.colors[mask]
     return pc
 
-def identify_bucket_edge(pc, black_threshold=60):
-    """
-    Identify points that are 'black' (representing the metal bucket edge).
-    """
+def identify_bucket_edge(pc, black_threshold=30):
     if not hasattr(pc, 'colors') or pc.colors is None:
-        return None
-        
+        return None, None
     colors = pc.colors[:, :3]
-    if np.max(colors) <= 1.0:
-        black_threshold /= 255.0
-        
-    # Find black points
-    mask = (colors < black_threshold).all(axis=1)
+    actual_thresh = black_threshold if np.max(colors) > 1.0 else black_threshold / 255.0
+    mask = (colors < actual_thresh).all(axis=1)
     edge_points = pc.vertices[mask]
-    print(f"Detected {len(edge_points)} potential bucket edge points.")
+    
+    # Filter outliers
+    if len(edge_points) > 10:
+        x = edge_points[:, 0]
+        q1, q3 = np.percentile(x, [10, 90])
+        iqr = q3 - q1
+        edge_points = edge_points[(x >= q1 - 1.5*iqr) & (x <= q3 + 1.5*iqr)]
     return edge_points, mask
 
-def align_and_scale_by_edge(pc, edge_points):
-    if edge_points is None or len(edge_points) < 10:
-        print("Warning: Insufficient edge points. Using bounding box fallback.")
-        pc.apply_translation(-np.mean(pc.vertices, axis=0))
-        extents = pc.bounds[1] - pc.bounds[0]
-        scale_factor = BUCKET_WIDTH / extents[0]
-        pc.apply_scale(scale_factor)
-        return pc
-
-    # Center cloud around edge points
-    edge_center = np.mean(edge_points, axis=0)
-    pc.apply_translation(-edge_center)
-    edge_points_centered = edge_points - edge_center
+def align_and_scale(pc, edge_points, bucket_mesh):
+    # Rotate: OpenCV X=Width, Y=Vertical, Z=Depth -> Mesh X=Depth, Y=Height, Z=Width
+    v = pc.vertices
+    pc.vertices = np.stack([v[:, 2], v[:, 1], v[:, 0]], axis=1)
+    e = edge_points
+    edge_pts_rot = np.stack([e[:, 2], e[:, 1], e[:, 0]], axis=1)
     
-    # Span of edge points
-    min_e, max_e = np.min(edge_points_centered, axis=0), np.max(edge_points_centered, axis=0)
-    edge_width = max_e[0] - min_e[0]
-    
-    scale_factor = BUCKET_WIDTH / edge_width
-    print(f"Scaling based on edge width ({edge_width:.2f}): {scale_factor:.6f}")
+    target_width = bucket_mesh.extents[2]
+    edge_width = np.max(edge_pts_rot[:, 2]) - np.min(edge_pts_rot[:, 2])
+    scale_factor = target_width / max(edge_width, 1.0)
     pc.apply_scale(scale_factor)
     
-    # Grounding: assume the edge points represent the top rim? 
-    # Or if they are the floor? Usually the user said "black metal bucket edge".
-    # Let's assume the edge points are roughly at the top or sides.
-    # We'll ground the whole cloud so the lowest points are at Y=0.
-    min_b, _ = pc.bounds
-    pc.apply_translation([0, -min_b[1], 0])
+    # Center edge points to mesh center
+    edge_pts_scaled = edge_pts_rot * scale_factor
+    e_center = np.mean(edge_pts_scaled, axis=0)
+    m_center = bucket_mesh.centroid
+    pc.apply_translation([m_center[0] - e_center[0], 0, m_center[2] - e_center[2]])
+    
+    # Grounding: Use Mesh Top (bounds[1][1]) as the reference for Edge Points
+    e_top = np.max(pc.vertices[(pc.vertices[:, 2] > m_center[2]-0.5) & (pc.vertices[:, 2] < m_center[2]+0.5), 1])
+    pc.apply_translation([0, bucket_mesh.bounds[1][1] - e_top, 0])
     
     return pc
 
-def calculate_material_volume(pc, edge_mask, grid_res=0.05):
-    """
-    Calculate volume of NON-edge points within the bucket boundaries.
-    """
-    # Filter out edge points for volume calculation
+def calculate_material_volume(pc, edge_mask, bucket_mesh, grid_res=0.01):
     material_points = pc.vertices[~edge_mask]
+    b_min, b_max = bucket_mesh.bounds
     
-    # Further filter points to be within the 5x2x3 bucket box
-    # Assuming centered at X=0, and Z goes from 0 to 2, Y from 0 to 3.
-    x, y, z = material_points[:, 0], material_points[:, 1], material_points[:, 2]
+    # Strict interior mask
+    mask = (material_points[:, 0] > b_min[0]+0.1) & (material_points[:, 0] < b_max[0]-0.1) & \
+           (material_points[:, 2] > b_min[2]+0.1) & (material_points[:, 2] < b_max[2]-0.1) & \
+           (material_points[:, 1] > b_min[1])
     
-    # Recenter X to be around 0
-    x_mean = (np.min(x) + np.max(x)) / 2
-    x -= x_mean
-    
-    # Mask for points inside the bucket volume
-    mask = (np.abs(x) <= BUCKET_WIDTH/2) & (z >= 0) & (z <= BUCKET_LENGTH) & (y >= 0) & (y <= BUCKET_HEIGHT)
-    
-    x_in = x[mask]
-    y_in = y[mask]
-    z_in = z[mask]
-    
-    if len(y_in) == 0:
-        print("No material points found inside the bucket boundaries.")
-        return 0.0
+    pts = material_points[mask]
+    if len(pts) == 0: return 0.0
 
-    # Grid integration
-    x_min, x_max = -BUCKET_WIDTH/2, BUCKET_WIDTH/2
-    z_min, z_max = 0, BUCKET_LENGTH
+    x, z, y = pts[:, 0], pts[:, 2], pts[:, 1]
+    x_min, x_max = np.min(x), np.max(x)
+    z_min, z_max = np.min(z), np.max(z)
     
     cols = int((x_max - x_min) / grid_res) + 1
     rows = int((z_max - z_min) / grid_res) + 1
-    grid = np.zeros((rows, cols))
+    grid = np.full((rows, cols), -np.inf)
     
-    ix = ((x_in - x_min) / grid_res).astype(int)
-    iz = ((z_in - z_min) / grid_res).astype(int)
-    
-    for i in range(len(y_in)):
-        if 0 <= iz[i] < rows and 0 <= ix[i] < cols:
-            grid[iz[i], ix[i]] = max(grid[iz[i], ix[i]], y_in[i])
+    for i in range(len(y)):
+        r, c = int((z[i] - z_min) / grid_res), int((x[i] - x_min) / grid_res)
+        if 0 <= r < rows and 0 <= c < cols:
+            grid[r, c] = max(grid[r, c], y[i])
             
-    # Volume = integral of height over the base area
-    volume = np.sum(grid) * (grid_res**2)
+    valid = np.argwhere(grid != -np.inf)
+    print(f"Integrating over {len(valid)} cells at {grid_res}m resolution.")
+    
+    volume = 0.0
+    for r, c in valid:
+        tx, tz = x_min + c * grid_res, z_min + r * grid_res
+        # Floor is roughly b_min[1] but we use nearest for precision
+        query = np.array([[tx, grid[r, c], tz]])
+        try:
+            _, dist, _ = bucket_mesh.nearest.on_surface(query)
+            floor_y = grid[r, c] - dist[0]
+        except:
+            floor_y = b_min[1]
+        volume += max(0, grid[r, c] - floor_y) * (grid_res**2)
     return volume
 
 def main():
-    pc_file = 'pointCloud.ply'
-    if not os.path.exists(pc_file):
-        print(f"Error: {pc_file} not found.")
-        return
-        
-    pc = load_and_clean_pc(pc_file)
-    edge_points, edge_mask = identify_bucket_edge(pc)
-    pc = align_and_scale_by_edge(pc, edge_points)
-    
+    pc = load_and_clean_pc('pointCloud.ply')
+    bucket = trimesh.load('bucket.obj')
+    edge_pts, edge_mask = identify_bucket_edge(pc, 30)
+    pc = align_and_scale(pc, edge_pts, bucket)
     pc.export('pointCloudAligned.ply')
-    print("Exported aligned point cloud to 'pointCloudAligned.ply'")
-    
-    volume = calculate_material_volume(pc, edge_mask)
-    print(f"\nEstimated material volume: {volume:.4f} cubic meters")
-    
-    capacity = BUCKET_LENGTH * BUCKET_WIDTH * BUCKET_HEIGHT
-    print(f"Bucket capacity: {capacity:.4f} cubic meters")
-    print(f"Fill level: {(volume / capacity) * 100:.2f}%")
+    vol = calculate_material_volume(pc, edge_mask, bucket)
+    print(f"Volume: {vol:.4f} m^3, Capacity: {np.prod(bucket.extents):.4f} m^3")
+    print(f"Fill level: {(vol/np.prod(bucket.extents))*100:.2f}%")
 
 if __name__ == "__main__":
     main()

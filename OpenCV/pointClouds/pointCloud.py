@@ -35,16 +35,20 @@ stereoMapR_y = cv_file.getNode('stereoMapR_y').mat()
 Q = cv_file.getNode('q').mat()
 
 # Using NEW image data
-imgL = cv2.imread('images/stereoLeft/imageL1.png')
-imgR = cv2.imread('images/stereoRight/imageR1.png')
+#imgL = cv2.imread('images/stereoLeft/imageL1.png')
+#imgR = cv2.imread('images/stereoRight/imageR1.png')
+imgL = cv2.imread('imgl.png')
+imgR = cv2.imread('imgr.png')
 
 if imgL is None or imgR is None:
     print("Error: Could not load images.")
     exit(1)
 
 # Undistort and rectify images
-imgR = cv2.remap(imgR, stereoMapR_x, stereoMapR_y, cv2.INTER_LANCZOS4, cv2.BORDER_CONSTANT, 0)
-imgL = cv2.remap(imgL, stereoMapL_x, stereoMapL_y, cv2.INTER_LANCZOS4, cv2.BORDER_CONSTANT, 0)
+# imgR = cv2.remap(imgR, stereoMapR_x, stereoMapR_y, cv2.INTER_LANCZOS4, cv2.BORDER_CONSTANT, 0)
+# imgL = cv2.remap(imgL, stereoMapL_x, stereoMapL_y, cv2.INTER_LANCZOS4, cv2.BORDER_CONSTANT, 0)
+
+print(f"imgL mean (no remap): {imgL.mean()}")
                 
 # Downsample each image 3 times (because they're too big)
 imgL = downsample_image(imgL,3)
@@ -90,15 +94,17 @@ disparity_map = np.float32(np.divide(disparity_map, 16.0))
 
 # Reproject points into 3D
 points_3D = cv2.reprojectImageTo3D(disparity_map, Q, handleMissingValues=False)
-# Get color of the reprojected points
-colors = cv2.cvtColor(imgR, cv2.COLOR_BGR2RGB)
+# Get color of the reprojected points from the LEFT image (matching the disparity map)
+colors = cv2.cvtColor(imgL, cv2.COLOR_BGR2RGB)
 
-# Get rid of points with value 0 (no depth)
-mask_map = disparity_map > disparity_map.min()
+# Get rid of points with invalid depth (disparity <= 0)
+mask_map = disparity_map > 0
 
 # Mask colors and points. 
 output_points = points_3D[mask_map]
 output_colors = colors[mask_map]
+
+print(f"Output colors min: {output_colors.min()}, max: {output_colors.max()}, mean: {output_colors.mean()}")
 
 
 # Function to create point cloud file
