@@ -127,7 +127,7 @@ Run the executable. After it is finished installing, you should be brought to th
 To properly run the WebRTC Streaming Client, do the following in the specified order:
 
 1. Connect to Bobcat's GlobalProtect VPN.
-2. Open the Streaming Client.Th
+2. Open the Streaming Client.
 3. In the "Server" text box, insert the appropriate IP address that Bobcat provides you.
 4. Press "Connect".
 
