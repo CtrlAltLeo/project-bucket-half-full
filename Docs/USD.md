@@ -16,7 +16,7 @@ The first two parts of the workflow are relatively acheivable using your persona
 >
 > The Isaac Sim web client will work, but connecting to the required VPN through GlobalProtect on ARM is not yet supported through Bobcat.
 >
-> Blender, however, should work completely okay on an ARM processor.*
+> Blender, however, should work completely okay on an ARM processor.
 
 ## usdview
 Using usdview is our first step to creating objects and getting an "introduction" to working directly with the USD file format (.usd or .usda).
