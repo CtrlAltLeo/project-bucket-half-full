@@ -106,6 +106,35 @@ You can safely exit the Isaac Sim shell, and disconnect from the server and it w
 `docker stop isaac-sim`.
 
 ## Usage
+Assuming that you have access to the VPN and are continously running the container, the following steps will be use to download and run the WebRTC Isaac Sim Streaming Client.
 
-Noah and Daniel
+### Installing the Streaming Client
 
+First, navigate to [Download Isaac Sim, Version 5.1.0](https://docs.isaacsim.omniverse.nvidia.com/5.1.0/installation/download.html)
+
+Next, scroll down until you see the `Isaac Sim WebRTC Streaming Client`. It should be version 1.1.5.
+
+> The next steps assume that you are downloading the Windows link. This is the version our team used for the project.
+
+Next, download the Windows version. You should now see an executable in your downloaded files called `isaacsim-webrtc-streaming-client-1.1.5-windows-x64.exe`.
+
+Run the executable. After it is finished installing, you should be brought to the following window:
+
+<img width="1915" height="1014" alt="Screenshot 2026-03-30 132025" src="https://github.com/user-attachments/assets/866fe2b5-8244-4fa1-bebb-a665d941019a" />
+
+### Order of Operation
+
+To properly run the WebRTC Streaming Client, do the following in the specified order:
+
+1. Connect to Bobcat's GlobalProtect VPN.
+2. Open the Streaming Client.Th
+3. In the "Server" text box, insert the appropriate IP address that Bobcat provides you.
+4. Press "Connect".
+
+If the VPN is operating properly, you should see the following viewport after a few moments of loading:
+
+![isaac-sim-viewport](https://github.com/user-attachments/assets/c37554fd-fda0-4b63-9649-5bc1bdb8fdfd)
+
+You can then use Isaac Sim as long as the continuous server is running and you are connect to the VPN.
+> Note: Since this is a remote streaming client, it is impossible to save your progress when you close the client. Even if you try to "save" a file inside the client, you will not be able to find the file again, and your progress will be lost. There is a possibility of using the "docker cp" command to copy and extract local files to and from the container, but our team did not discover how to accomplish this in our time with the client.
+> Going forward, the implementation of the "docker cp" command should be investigated in order to prevent the loss of progress.
