@@ -137,4 +137,5 @@ If the VPN is operating properly, you should see the following viewport after a 
 
 You can then use Isaac Sim as long as the continuous server is running and you are connect to the VPN.
 > Note: Since this is a remote streaming client, it is impossible to save your progress when you close the client. Even if you try to "save" a file inside the client, you will not be able to find the file again, and your progress will be lost. There is a possibility of using the "docker cp" command to copy and extract local files to and from the container, but our team did not discover how to accomplish this in our time with the client.
+
 > Going forward, the implementation of the "docker cp" command should be investigated in order to prevent the loss of progress.
