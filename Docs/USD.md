@@ -63,6 +63,95 @@ This file is then uploaded into usdview and gives us access to observing our sph
 
 To begin working with and viewing USD files, usdview download and documentation can be found [here](https://docs.omniverse.nvidia.com/usd/latest/usdview/index.html). Walking through most of the usdview section is extremely helpful to the installation process and understanding the basics.
 
+> Note: After following the usdview quickstart documentation, you can recreate the previous file in usdview by:
+1. Opening the HelloWorld.usda file in Notepad/Notepad++
+2. Replacing its code with the code of the example file
+3. Saving the file
+4. Reloading the scene
+> The default HelloWorld scene will then be replaced by the single red sphere we created. You can also try the following file that creates 3 cubes of various sizes and textures:
+
+    #usda 1.0
+    (
+        defaultPrim = "hello"
+    )
+
+    def Material "TestMaterial1"
+    {
+        token outputs:surface.connect      = </TestMaterial1/pbrMat1.outputs:surface>
+    
+        def Shader "pbrMat1"
+        {
+            uniform token info:id = "UsdPreviewSurface"        
+            token outputs:surface
+
+            # Material Inputs
+            int inputs:useSpecularWorkflow       = 1
+	        color3f  inputs:diffuseColor         = (0.5, 0.5, 0.5)
+            color3f  inputs:specularColor        = (0.8, 0.8, 0.8)
+            color3f  inputs:emissiveColor        = (1, 0, 0)
+            float    inputs:roughness            = 0.3
+        }
+    }
+
+    def Material "TestMaterial2"
+    {
+        token outputs:surface.connect      = </TestMaterial2/pbrMat1.outputs:surface>
+    
+        def Shader "pbrMat1"
+        {
+            uniform token info:id = "UsdPreviewSurface"        
+            token outputs:surface
+
+            # Material Inputs
+            int inputs:useSpecularWorkflow       = 1
+	        color3f  inputs:diffuseColor         = (0.5, 0.5, 0.5)
+            color3f  inputs:specularColor        = (0.8, 0.8, 0.8)
+            color3f  inputs:emissiveColor        = (0, 1, 0)
+            float    inputs:roughness            = 0.5
+        }
+    }
+ 
+    def Xform "hello1"
+    {
+        custom double3 xformOp:translate = (2, 2, 2)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+
+        def Cube "Cube1"
+        {
+            float3[] extent = [(-2, -2, -2), (2, 2, 2)]
+            color3f[] primvars:displayColor = [(1, 0, 0)]
+            double size = 1
+	    rel material:binding = </TestMaterial1>
+        }
+    }
+
+    def Xform "hello2"
+    {
+        custom double3 xformOp:translate = (3.7, 3.7, 3.7)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+
+        def Cube "Cube2"
+        {
+            float3[] extent = [(-2, -2, -2), (2, 2, 2)]
+            color3f[] primvars:displayColor = [(0, 1, 0)]
+            double size = 1.5
+	    rel material:binding = </TestMaterial2>
+        }
+    }
+
+    def Xform "hello3"
+    {
+        custom double3 xformOp:translate = (6, 6, 6)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+
+        def Cube "Cube3"
+        {
+            float3[] extent = [(-2, -2, -2), (2, 2, 2)]
+            color3f[] primvars:displayColor = [(0, 0, 1)]
+            double size = 2
+        }
+    }
+
 ## Blender
 Now that we have worked with coding basic objects with USD fies and viewing them in usdview, it is time to move to a more robust application: *Blender*.
 
