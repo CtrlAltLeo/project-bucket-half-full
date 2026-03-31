@@ -474,3 +474,16 @@ In simple terms, this script follows a clear segmentation pipeline:
 12. Save and display the final results.
 
 This makes the code a good proof-of-concept for segmentation because each step narrows the image down until the dirt region is isolated in a way that is easy to understand and visualize.
+
+# Machine Learning Overview
+
+Source file: **neural_segment_moving**
+
+This code demonstrates the basic idea behind using machine learning for image segmentation. Instead of writing fixed image-processing rules by hand, the program creates many simple training examples and teaches a neural network to recognize the shape region automatically. In this example, the shapes stand in for an object of interest, just like dirt would in a real bucket image. The model is shown both the input image and the correct mask, so it can learn how to predict which pixels belong to the object.
+
+The process begins by generating a synthetic dataset made of circles and ellipses. This is necessary because a machine learning model needs many labeled examples in order to learn. Each training sample includes an image and a matching mask, which gives the model a clear correct answer during training. The network then uses convolution layers to examine local patterns in the image and gradually learn what makes the object region different from the background.
+
+During training, the model compares its predicted mask to the true mask and measures the error using a loss function. That error is then used to adjust the model's internal weights so that future predictions improve. After repeating this process over many examples, the model becomes better at identifying the target region.
+
+The live visualization at the end shows why this approach is useful. As the input shape changes over time, the trained model predicts the mask for each new frame. This demonstrates how machine learning can support real-time segmentation by adapting to changing shapes without needing hard-coded rules for every possible case. In a real application, this same idea could be extended to identify dirt inside a loader bucket, helping isolate the material region before volume calculations are performed.
+
