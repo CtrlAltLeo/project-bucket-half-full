@@ -180,13 +180,13 @@ It will show you all the information you need to know about the capture process,
 
 All information in this section comes from [the official docker documentation](https://docs.docker.com/reference/cli/docker/container/cp/).
 
-To load in and extract local files between your system and the container, you can make use of "docker cp"
+To load in and extract local files between your system and the container, you can make use of "docker cp".
 
-The syntax for copying a local file/folder to the container is
+The syntax for copying a local file/folder to the container is:
 `docker cp ./some_file CONTAINER:/work`
 > You can replace "work" with whatever the url is of the folder you want to copy into.
 
-The syntax for copying a file/folder in the container is
+The syntax for copying a file/folder in the container is:
 `docker cp CONTAINER:/desired_url /tmp/copied_folder_or_file/`
 > Replace "/desired_url" with the copied url of the folder/file you want to extract, and replace "tmp/copied_folder_or_file/" with the destination you want on your local system.
 
