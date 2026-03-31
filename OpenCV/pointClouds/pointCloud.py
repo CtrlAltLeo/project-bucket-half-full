@@ -35,8 +35,8 @@ stereoMapR_y = cv_file.getNode('stereoMapR_y').mat()
 Q = cv_file.getNode('q').mat()
 
 # Using NEW image data
-imgL = cv2.imread('images/stereoLeft/imageL1.png')
-imgR = cv2.imread('images/stereoRight/imageR1.png')
+imgL = cv2.imread('0002.png')
+imgR = cv2.imread('0001.png')
 
 if imgL is None or imgR is None:
     print("Error: Could not load images.")
@@ -100,6 +100,28 @@ mask_map = disparity_map > disparity_map.min()
 output_points = points_3D[mask_map]
 output_colors = colors[mask_map]
 
+#=========================================================
+# Normalize Point Cloud for Visualization
+#=========================================================
+if len(output_points) > 0:
+    # Filter out any non-finite points (inf/nan) that might have escaped the mask
+    mask_finite = np.all(np.isfinite(output_points), axis=1)
+    output_points = output_points[mask_finite]
+    output_colors = output_colors[mask_finite]
+
+    print("Normalizing points...")
+    # Center the points at the origin
+    centroid = np.mean(output_points, axis=0)
+    output_points -= centroid
+
+    # Scale the points to fit within a unit cube (preserves aspect ratio)
+    max_range = np.max(np.abs(output_points))
+    if max_range > 0:
+        output_points /= max_range
+    
+    print(f"Points normalized. Scale factor used: {max_range}")
+else:
+    print("Warning: No valid points found to normalize.")
 
 # Function to create point cloud file
 def create_point_cloud_file(vertices, colors, filename):
