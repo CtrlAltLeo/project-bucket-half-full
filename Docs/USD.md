@@ -153,14 +153,19 @@ To begin working with and viewing USD files, usdview download and documentation 
     }
 
 ## Blender
-Now that we have worked with coding basic objects with USD fies and viewing them in usdview, it is time to move to a more robust application: *Blender*.
+Now that we have worked with coding basic objects with USD files and viewing them in usdview, it is time to move to a more robust application: *Blender*.
 
 To begin working with Blender, the download and documentation can be found [here](https://www.blender.org/download/). At the time of composing this documentation, the next version of Blender, **5.1**, has been released.
 
+Since we now have an understanding of how to create several objects, it is time to break one of these objects into "rocks" to be later implemented with the model of a bucket. This is the beginning of our work with a type of particle and physics simulation. To do so, we took advantage of two different methods: Deformation of cubes and Cell Fracture division.
+
+### Cell Fracture
+
+A very helpful video that walks you through this process can be found [here](https://youtu.be/wvtbl9kgeKs?si=gxsOav0Wyf8MJ-pS).
 
 
 ### Aside: STL -> USD using Blender
-To demonstrate some of the flexibility USD has to offer, we tested converting a STL (.stl) file to a USD (.usda) file and loading this into usdview. This can be done simply by:
+To demonstrate some of the flexibility USD has to offer, we tested converting an STL (.stl) file to a USD (.usda) file and loading this into usdview. This can be done simply by:
 1. Downloading any STL file of your choosing (or creating your own)
 2. Opening the file in Blender
 3. Exporting as a USD file
