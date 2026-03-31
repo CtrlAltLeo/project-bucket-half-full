@@ -12,8 +12,9 @@ used IsaacSim to create training data that could be consumed by the image softwa
 The vision team had two main ideas for solving the problem: Segmentation and Point Clouds.
 
 ## Segmentation
+One of the main challenges with using stereo cameras to calculate dirt volume is determining which parts of the image are actually relevant. In our case, we only care about the dirt inside the bucket, not the background or the machine itself. To isolate this, we explored image segmentation. Segmentation is a computer vision technique that processes an image to identify and separate specific regions or objects. By applying segmentation, we aimed to extract only the dirt within the bucket, allowing us to focus on that region for more accurate volume calculations.
 
-Paul P can add writeup here.
+After isolating the problem using segmentation, machine learning techniques can be used to automate this process. Instead of relying on manually defined rules, a model can be trained on labeled images where the dirt regions are identified. Through this training process, the model learns patterns such as texture and shape that distinguish dirt from the bucket and surrounding environment. Once trained, the model can take in new images and predict the location of dirt regions in real time with minimal error. This approach improves consistency and adaptability compared to traditional image processing methods, especially in varying lighting and environmental conditions.
 
 ## Point Clouds
 A Stereo Camera (used with OpenCV) can pull a Point Cloud from two stereo images. A Point Cloud is a collection of points in 3 space
