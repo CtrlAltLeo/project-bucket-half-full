@@ -139,3 +139,59 @@ You can then use Isaac Sim as long as the continuous server is running and you a
 > Note: Since this is a remote streaming client, it is impossible to save your progress when you close the client. Even if you try to "save" a file inside the client, you will not be able to find the file again, and your progress will be lost. There is a possibility of using the "docker cp" command to copy and extract local files to and from the container, but our team did not discover how to accomplish this in our time with the client.
 
 > Going forward, the implementation of the "docker cp" command should be investigated in order to prevent the loss of progress.
+
+### Particle Sampler
+
+The following section will show how a user of the Isaac Sim Streaming Client may turn any object into a group of particles, as shown in the example picture below:
+
+<img width="828" height="574" alt="Screenshot 2026-03-24 004134" src="https://github.com/user-attachments/assets/c95e69ef-6d28-4597-85cc-486fb2d6480a" />
+
+It is a very simple process:
+1. After creating a new object, go to the "Stage" tab and right click the object's name (ex: "Sphere", "Cube", "Torus").
+2. Go to "Add"
+3. Under "Add", go to "Physics"
+4. There will be an option in "Physics" called "Particle Sampler"
+5. Simply click this option and your object will be turned into a cloud of particles in the shape of that object.
+
+This process does not detail how to make a particle emitter, which the simulation team was unable to solve at the time of writing. Our team used a method that quicker and simpler than figuring out how to make a particle emitter, though it is restricted by the cloud being created from the shape of the object.
+> Note: The particle cloud can be moved, rotated, and scaled just like a normal object, so this might help alleviate the restrictive nature of the Particle Sampler feature.
+
+### Movie Capture
+
+To utilize the "Movie Capture" extension, the greatest breakthrough of the current simulation team, follow these steps:
+1. In the streaming client, go to Window > Extensions
+2. In the search bar, search "Movie Capture"; it will be easy to find because it will be the only extension that comes up.
+3. Enable the Movie Capture extension.
+4. To see the window, go to Window > Rendering > Movie Capture and click it.
+
+You should see something like this:
+
+<img width="435" height="524" alt="Screenshot 2026-03-31 005438" src="https://github.com/user-attachments/assets/d8a3a4e6-eb82-4d51-84a5-4efececbb024" />
+
+You can adjust which camera is capturing the footage, the framerate, the range of the capture, the file path, and more.
+
+To start the capture, simply click "Capture Sequence". You will see a new window like this:
+
+<img width="427" height="373" alt="Screenshot 2026-03-31 005941" src="https://github.com/user-attachments/assets/150f7bcb-d355-4c8d-9352-05a02471b26a" />
+
+It will show you all the information you need to know about the capture process, as well as give you options to pause or cancel the process.
+
+### Using the "docker cp" command
+
+All information in this section comes from [the official docker documentation](https://docs.docker.com/reference/cli/docker/container/cp/)
+
+To load in and extract local files between your system and the container, you can make use of "docker cp"
+
+The syntax for copying a local file/folder to the container is
+`docker cp ./some_file CONTAINER:/work`
+> You can replace "work" with whatever the url is of the folder you want to copy into.
+
+The syntax for copying a file/folder in the container is
+`docker cp CONTAINER:/desired_url /tmp/copied_folder_or_file/`
+> Replace "/desired_url" with the copied url of the folder/file you want to extract, and replace "tmp/copied_folder_or_file/" with the destination you want on your local system.
+
+For our simulation team, we extracted the following URL, which included all the captured images from our first attempt using Movie Capture:
+`docker cp CONTAINER:/isaac-sim/.local/share/ov/data/documents/Kit/shared/capture Capture_images.tar`
+
+We were then able to unzip the local .tar file and find our captured images.
+> At the time of writing, the opposite operation of copying a local file into the container has not been tested. This might be a good place for the new simulation team to start when investigating new ground.
