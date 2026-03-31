@@ -178,7 +178,7 @@ It will show you all the information you need to know about the capture process,
 
 ### Using the "docker cp" command
 
-All information in this section comes from [the official docker documentation](https://docs.docker.com/reference/cli/docker/container/cp/)
+All information in this section comes from [the official docker documentation](https://docs.docker.com/reference/cli/docker/container/cp/).
 
 To load in and extract local files between your system and the container, you can make use of "docker cp"
 
