@@ -1,15 +1,15 @@
 # Start Here
 Hello Future Students. Here is an outline of this project so far, and instructions for using everything we've worked on. These
-Docs were written in the Spring of 2026.
-Leo Devick, Aidan Contant-Guy, Noah Deabel, Daniel Kane and Paul Pellegrin worked on the first iteration of this project. So if you
+Docs were written in the spring of 2026.
+Leo Devick, Aidan Contant-Guy, Noah Deabel, Daniel Kane and Paul Pellegrin worked on the first iteration of this project. If you
 don't like these docs, you know who to complain to!
 
 # High Level Overview + What we acomplished
-We undertook this project with Bobcat, it was called the Bobcat Perception Project. The goal was to use a Stereo Camera attached
-to the arm of loader to figure out the volume of dirt in the bucket. We also aimed to track load and dump events. We split our
-project into two teams: the Vision team, tasked with calculating dirt volume from stereo images, and the Simulation Team, which
-used IsaacSim to create training data that could be consumed by the image software. 
-The vision team had two main ideas for solving the problem: Segmentation and Point Clouds.
+We undertook this project with Bobcat, called the Bobcat Perception Project. The goal was to use a stereo camera attached
+to the arm of loader to determine the volume of dirt in the bucket. We also aimed to track load and dump events. We split our
+project into two teams: the vision team, tasked with calculating dirt volume from stereo images, and the simulation team, which
+used Isaac Sim to create training data that could be consumed by the image software. 
+The vision team had two main ideas for solving the problem: segmentation and point clouds.
 
 ## Segmentation
 One of the main challenges with using stereo cameras to calculate dirt volume is determining which parts of the image are actually relevant. In our case, we only care about the dirt inside the bucket, not the background or the machine itself. To isolate this, we explored image segmentation. Segmentation is a computer vision technique that processes an image to identify and separate specific regions or objects. By applying segmentation, we aimed to extract only the dirt within the bucket, allowing us to focus on that region for more accurate volume calculations.
